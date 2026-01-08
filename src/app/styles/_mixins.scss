@@ -24,6 +24,12 @@
   }
 }
 
+@mixin ultrawide {
+  @media (min-width: $breakpoint-ultrawide) {
+    @content;
+  }
+}
+
 @mixin button-base {
   padding: $spacing-sm $spacing-md;
   border-radius: $border-radius-md;
@@ -161,6 +167,11 @@
 
   @include desktop {
     padding: 0 $spacing-xl;
+  }
+
+  @include ultrawide {
+    max-width: 1440px;
+    padding: 0 $spacing-2xl * 2;
   }
 }
 

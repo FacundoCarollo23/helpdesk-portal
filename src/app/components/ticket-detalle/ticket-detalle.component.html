@@ -1,1 +1,134 @@
-<p>ticket-detalle works!</p>
+<div class="ticket-detail-container">
+  <div class="detail-header">
+    <button class="btn-back" (click)="goBack()">
+      ← Volver al Dashboard
+    </button>
+  </div>
+
+  <div *ngIf="loading" class="loading-state">
+    <div class="spinner"></div>
+    <p>Cargando ticket...</p>
+  </div>
+
+  <div *ngIf="error && !loading" class="error-state">
+    <p>{{ error }}</p>
+    <button (click)="loadTicket()" class="btn-retry">Reintentar</button>
+  </div>
+
+  <div *ngIf="ticket && !loading" class="ticket-content">
+    <div class="ticket-info-card">
+      <div class="ticket-header-section">
+        <div class="ticket-title-group">
+          <span class="ticket-id">{{ ticket.id }}</span>
+          <h1 class="ticket-title">{{ ticket.title }}</h1>
+        </div>
+
+        <div class="ticket-badges">
+          <span class="badge" [ngClass]="getStatusClass(ticket.status)">
+            {{ ticket.status }}
+          </span>
+          <span class="badge" [ngClass]="getPriorityClass(ticket.priority)">
+            {{ ticket.priority }}
+          </span>
+        </div>
+      </div>
+
+      <div class="ticket-meta">
+        <div class="meta-item">
+          <span class="meta-label">Categoría:</span>
+          <span class="meta-value">{{ ticket.category }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Creado por:</span>
+          <span class="meta-value">{{ ticket.createdBy.name }}</span>
+        </div>
+        <div class="meta-item">
+          <span class="meta-label">Fecha de creación:</span>
+          <span class="meta-value">{{ formatDateTime(ticket.createdAt) }}</span>
+        </div>
+        <div class="meta-item" *ngIf="ticket.assignedTo">
+          <span class="meta-label">Asignado a:</span>
+          <span class="meta-value">{{ ticket.assignedTo.name }}</span>
+        </div>
+      </div>
+
+      <div class="ticket-description-section">
+        <h2 class="section-title">Descripción</h2>
+        <p class="ticket-description">{{ ticket.description }}</p>
+      </div>
+    </div>
+
+    <div class="timeline-section">
+      <h2 class="section-title">Timeline de Eventos</h2>
+      <div class="timeline">
+        <div *ngFor="let event of ticket.timeline" class="timeline-item">
+          <div class="timeline-marker"></div>
+          <div class="timeline-content">
+            <p class="timeline-description">{{ event.description }}</p>
+            <div class="timeline-meta">
+              <span class="timeline-user">{{ event.user.name }}</span>
+              <span class="timeline-time">{{ formatDateTime(event.timestamp) }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="comments-section">
+      <h2 class="section-title">
+        Comentarios ({{ ticket.comments.length }})
+      </h2>
+
+      <div class="comments-list" *ngIf="ticket.comments.length > 0">
+        <div *ngFor="let comment of ticket.comments" class="comment-item">
+          <div class="comment-header">
+            <div class="comment-user">
+              <div class="user-avatar">
+                {{ comment.user.name.charAt(0).toUpperCase() }}
+              </div>
+              <div class="user-info">
+                <span class="user-name">{{ comment.user.name }}</span>
+                <span class="comment-date">{{ formatDateTime(comment.createdAt) }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="comment-content">
+            {{ comment.content }}
+          </div>
+        </div>
+      </div>
+
+      <div class="no-comments" *ngIf="ticket.comments.length === 0">
+        <p>No hay comentarios aún. Sé el primero en comentar.</p>
+      </div>
+
+      <div class="comment-form-section">
+        <h3 class="form-title">Añadir Comentario</h3>
+        <form [formGroup]="commentForm" (ngSubmit)="onSubmitComment()">
+          <div class="form-group">
+            <textarea
+              formControlName="content"
+              class="comment-textarea"
+              [class.error]="hasCommentError()"
+              rows="4"
+              placeholder="Escribe tu comentario aquí (mínimo 10 caracteres)"></textarea>
+            <span class="error-message" *ngIf="hasCommentError()">
+              {{ getCommentError() }}
+            </span>
+          </div>
+
+          <button
+            type="submit"
+            class="btn-submit-comment"
+            [disabled]="submittingComment">
+            <span *ngIf="!submittingComment">Enviar Comentario</span>
+            <span *ngIf="submittingComment" class="loading-text">
+              <span class="spinner-small"></span>
+              Enviando...
+            </span>
+          </button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

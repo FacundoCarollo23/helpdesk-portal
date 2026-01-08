@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Inject, PLATFORM_ID } from '@angular/core';
+import { isPlatformBrowser } from '@angular/common';
 import { Observable, of, throwError } from 'rxjs';
 import { delay, catchError } from 'rxjs/operators';
 import { Ticket, CreateTicketDto, CommentDto, DashboardStats, TicketStatus, Comment, TimelineEvent } from '../models/ticket.model';
@@ -10,12 +11,19 @@ import { MOCK_TICKETS, MOCK_USER } from '../data/mock-data';
 export class TicketservService {
   private tickets: Ticket[] = [];
   private readonly STORAGE_KEY = 'helpdesk_tickets';
+  private isBrowser: boolean;
 
-  constructor() {
+  constructor(@Inject(PLATFORM_ID) platformId: Object) {
+    this.isBrowser = isPlatformBrowser(platformId);
     this.loadTickets();
   }
 
   private loadTickets(): void {
+    if (!this.isBrowser) {
+      this.tickets = JSON.parse(JSON.stringify(MOCK_TICKETS), this.dateReviver);
+      return;
+    }
+
     const stored = localStorage.getItem(this.STORAGE_KEY);
     if (stored) {
       this.tickets = JSON.parse(stored, this.dateReviver);
@@ -26,7 +34,9 @@ export class TicketservService {
   }
 
   private saveTickets(): void {
-    localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.tickets));
+    if (this.isBrowser) {
+      localStorage.setItem(this.STORAGE_KEY, JSON.stringify(this.tickets));
+    }
   }
 
   private dateReviver(key: string, value: any): any {

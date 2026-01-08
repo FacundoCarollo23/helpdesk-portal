@@ -1,0 +1,369 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.ticket-detail-container {
+  @include container;
+  padding-top: $spacing-lg;
+  padding-bottom: $spacing-2xl;
+}
+
+.detail-header {
+  margin-bottom: $spacing-xl;
+
+  .btn-back {
+    @include button-secondary;
+    padding: $spacing-sm $spacing-md;
+  }
+}
+
+.loading-state,
+.error-state {
+  @include flex-center;
+  flex-direction: column;
+  padding: $spacing-2xl;
+  text-align: center;
+  color: $gray-600;
+
+  .spinner {
+    @include loading-spinner;
+    margin-bottom: $spacing-md;
+  }
+
+  p {
+    font-size: $font-size-base;
+    margin-bottom: $spacing-md;
+  }
+
+  .btn-retry {
+    @include button-primary;
+    margin-top: $spacing-md;
+  }
+}
+
+.ticket-content {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-xl;
+}
+
+.ticket-info-card {
+  @include card;
+  padding: $spacing-xl;
+
+  @include tablet {
+    padding: $spacing-2xl;
+  }
+}
+
+.ticket-header-section {
+  padding-bottom: $spacing-lg;
+  border-bottom: 1px solid $gray-200;
+  margin-bottom: $spacing-lg;
+
+  .ticket-title-group {
+    margin-bottom: $spacing-md;
+
+    .ticket-id {
+      display: block;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-semibold;
+      color: $gray-600;
+      margin-bottom: $spacing-xs;
+    }
+
+    .ticket-title {
+      font-size: $font-size-xl;
+      font-weight: $font-weight-bold;
+      color: $gray-900;
+
+      @include tablet {
+        font-size: $font-size-2xl;
+      }
+    }
+  }
+
+  .ticket-badges {
+    display: flex;
+    gap: $spacing-sm;
+    flex-wrap: wrap;
+  }
+}
+
+.ticket-meta {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-md;
+  margin-bottom: $spacing-lg;
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .meta-item {
+    .meta-label {
+      display: block;
+      font-size: $font-size-sm;
+      font-weight: $font-weight-medium;
+      color: $gray-600;
+      margin-bottom: $spacing-xs;
+    }
+
+    .meta-value {
+      display: block;
+      font-size: $font-size-base;
+      color: $gray-900;
+    }
+  }
+}
+
+.ticket-description-section {
+  .section-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $gray-900;
+    margin-bottom: $spacing-md;
+  }
+
+  .ticket-description {
+    font-size: $font-size-base;
+    color: $gray-700;
+    line-height: 1.6;
+    white-space: pre-wrap;
+  }
+}
+
+.timeline-section,
+.comments-section {
+  @include card;
+  padding: $spacing-xl;
+
+  @include tablet {
+    padding: $spacing-2xl;
+  }
+
+  .section-title {
+    font-size: $font-size-xl;
+    font-weight: $font-weight-bold;
+    color: $gray-900;
+    margin-bottom: $spacing-lg;
+  }
+}
+
+.timeline {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: $gray-200;
+  }
+
+  .timeline-item {
+    position: relative;
+    padding-left: $spacing-xl;
+    padding-bottom: $spacing-lg;
+
+    &:last-child {
+      padding-bottom: 0;
+    }
+
+    .timeline-marker {
+      position: absolute;
+      left: 0;
+      top: 4px;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      background-color: $primary;
+      border: 3px solid $white;
+      box-shadow: 0 0 0 2px $gray-200;
+    }
+
+    .timeline-content {
+      .timeline-description {
+        font-size: $font-size-base;
+        color: $gray-800;
+        margin-bottom: $spacing-xs;
+      }
+
+      .timeline-meta {
+        display: flex;
+        flex-direction: column;
+        gap: $spacing-xs;
+        font-size: $font-size-sm;
+
+        @include mobile {
+          flex-direction: row;
+          gap: $spacing-md;
+        }
+
+        .timeline-user {
+          color: $gray-600;
+          font-weight: $font-weight-medium;
+        }
+
+        .timeline-time {
+          color: $gray-500;
+        }
+      }
+    }
+  }
+}
+
+.comments-list {
+  margin-bottom: $spacing-xl;
+
+  .comment-item {
+    padding: $spacing-lg;
+    background-color: $gray-50;
+    border-radius: $border-radius-lg;
+    margin-bottom: $spacing-md;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .comment-header {
+      margin-bottom: $spacing-md;
+
+      .comment-user {
+        display: flex;
+        align-items: center;
+        gap: $spacing-md;
+
+        .user-avatar {
+          @include flex-center;
+          width: 40px;
+          height: 40px;
+          border-radius: 50%;
+          background-color: $primary;
+          color: $white;
+          font-weight: $font-weight-semibold;
+          font-size: $font-size-lg;
+        }
+
+        .user-info {
+          display: flex;
+          flex-direction: column;
+          gap: $spacing-xs;
+
+          .user-name {
+            font-size: $font-size-base;
+            font-weight: $font-weight-semibold;
+            color: $gray-900;
+          }
+
+          .comment-date {
+            font-size: $font-size-xs;
+            color: $gray-500;
+          }
+        }
+      }
+    }
+
+    .comment-content {
+      font-size: $font-size-base;
+      color: $gray-700;
+      line-height: 1.6;
+      white-space: pre-wrap;
+    }
+  }
+}
+
+.no-comments {
+  padding: $spacing-xl;
+  text-align: center;
+  color: $gray-500;
+  background-color: $gray-50;
+  border-radius: $border-radius-lg;
+  margin-bottom: $spacing-xl;
+}
+
+.comment-form-section {
+  padding-top: $spacing-xl;
+  border-top: 1px solid $gray-200;
+
+  .form-title {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-semibold;
+    color: $gray-900;
+    margin-bottom: $spacing-md;
+  }
+
+  .form-group {
+    margin-bottom: $spacing-md;
+
+    .comment-textarea {
+      @include input-base;
+      resize: vertical;
+      min-height: 100px;
+    }
+
+    .error-message {
+      @include error-message;
+    }
+  }
+
+  .btn-submit-comment {
+    @include button-primary;
+    padding: $spacing-md $spacing-xl;
+
+    .loading-text {
+      @include flex-center;
+      gap: $spacing-sm;
+    }
+
+    .spinner-small {
+      @include loading-spinner;
+      width: 16px;
+      height: 16px;
+      border-width: 2px;
+    }
+  }
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $white;
+
+  &.status-open {
+    background-color: $status-open;
+  }
+
+  &.status-in-progress {
+    background-color: $status-in-progress;
+  }
+
+  &.status-resolved {
+    background-color: $status-resolved;
+  }
+
+  &.status-closed {
+    background-color: $status-closed;
+  }
+
+  &.priority-critical {
+    background-color: $priority-critical;
+  }
+
+  &.priority-high {
+    background-color: $priority-high;
+  }
+
+  &.priority-medium {
+    background-color: $priority-medium;
+  }
+
+  &.priority-low {
+    background-color: $priority-low;
+  }
+}
