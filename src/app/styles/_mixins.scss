@@ -1,0 +1,198 @@
+@import './variables';
+
+@mixin mobile {
+  @media (min-width: $breakpoint-mobile) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (min-width: $breakpoint-tablet) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $breakpoint-desktop) {
+    @content;
+  }
+}
+
+@mixin wide {
+  @media (min-width: $breakpoint-wide) {
+    @content;
+  }
+}
+
+@mixin button-base {
+  padding: $spacing-sm $spacing-md;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: all $transition-base;
+  border: none;
+  outline: none;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+@mixin button-primary {
+  @include button-base;
+  background-color: $primary;
+  color: $white;
+
+  &:hover:not(:disabled) {
+    background-color: darken($primary, 10%);
+  }
+
+  &:active:not(:disabled) {
+    background-color: darken($primary, 15%);
+  }
+}
+
+@mixin button-secondary {
+  @include button-base;
+  background-color: $white;
+  color: $gray-700;
+  border: 1px solid $gray-300;
+
+  &:hover:not(:disabled) {
+    background-color: $gray-50;
+  }
+
+  &:active:not(:disabled) {
+    background-color: $gray-100;
+  }
+}
+
+@mixin card {
+  background-color: $white;
+  border-radius: $border-radius-lg;
+  box-shadow: $shadow-sm;
+  padding: $spacing-lg;
+  transition: box-shadow $transition-base;
+
+  &:hover {
+    box-shadow: $shadow-md;
+  }
+}
+
+@mixin badge($bg-color, $text-color: $white) {
+  display: inline-flex;
+  align-items: center;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $border-radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  background-color: $bg-color;
+  color: $text-color;
+}
+
+@mixin status-badge($status) {
+  @if $status == 'open' {
+    @include badge($status-open);
+  } @else if $status == 'in-progress' {
+    @include badge($status-in-progress);
+  } @else if $status == 'resolved' {
+    @include badge($status-resolved);
+  } @else if $status == 'closed' {
+    @include badge($status-closed);
+  }
+}
+
+@mixin priority-badge($priority) {
+  @if $priority == 'critical' {
+    @include badge($priority-critical);
+  } @else if $priority == 'high' {
+    @include badge($priority-high);
+  } @else if $priority == 'medium' {
+    @include badge($priority-medium);
+  } @else if $priority == 'low' {
+    @include badge($priority-low);
+  }
+}
+
+@mixin input-base {
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  border: 1px solid $gray-300;
+  border-radius: $border-radius-md;
+  font-size: $font-size-sm;
+  transition: border-color $transition-fast;
+
+  &:focus {
+    outline: none;
+    border-color: $primary;
+    box-shadow: 0 0 0 3px rgba($primary, 0.1);
+  }
+
+  &.error {
+    border-color: $error;
+  }
+}
+
+@mixin form-label {
+  display: block;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $gray-700;
+  margin-bottom: $spacing-xs;
+}
+
+@mixin error-message {
+  color: $error;
+  font-size: $font-size-xs;
+  margin-top: $spacing-xs;
+}
+
+@mixin container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 $spacing-md;
+
+  @include tablet {
+    padding: 0 $spacing-lg;
+  }
+
+  @include desktop {
+    padding: 0 $spacing-xl;
+  }
+}
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+@mixin truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+@mixin loading-spinner {
+  border: 3px solid $gray-200;
+  border-top-color: $primary;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
