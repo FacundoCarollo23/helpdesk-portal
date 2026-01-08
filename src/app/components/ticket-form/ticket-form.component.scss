@@ -1,0 +1,144 @@
+@import '../../styles/variables';
+@import '../../styles/mixins';
+
+.ticket-form-container {
+  @include container;
+  padding-top: $spacing-lg;
+  padding-bottom: $spacing-2xl;
+  max-width: 800px;
+}
+
+.form-header {
+  margin-bottom: $spacing-xl;
+
+  h1 {
+    font-size: $font-size-2xl;
+    font-weight: $font-weight-bold;
+    color: $gray-900;
+    margin-bottom: $spacing-xs;
+
+    @include tablet {
+      font-size: $font-size-3xl;
+    }
+  }
+
+  .form-subtitle {
+    font-size: $font-size-base;
+    color: $gray-600;
+  }
+}
+
+.form-card {
+  @include card;
+  padding: $spacing-xl;
+
+  @include mobile {
+    padding: $spacing-2xl;
+  }
+}
+
+.form-group {
+  margin-bottom: $spacing-lg;
+
+  &:last-child {
+    margin-bottom: 0;
+  }
+
+  .form-label {
+    @include form-label;
+
+    .required {
+      color: $error;
+    }
+  }
+
+  .form-input,
+  .form-select {
+    @include input-base;
+  }
+
+  .form-textarea {
+    @include input-base;
+    resize: vertical;
+    min-height: 120px;
+    font-family: inherit;
+  }
+
+  .field-info {
+    @include flex-between;
+    margin-top: $spacing-xs;
+  }
+
+  .error-message {
+    @include error-message;
+    margin: 0;
+  }
+
+  .char-count {
+    font-size: $font-size-xs;
+    color: $gray-500;
+    margin-left: auto;
+  }
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: $spacing-md;
+
+  @include tablet {
+    grid-template-columns: repeat(2, 1fr);
+    gap: $spacing-lg;
+  }
+}
+
+.error-alert {
+  padding: $spacing-md;
+  background-color: rgba($error, 0.1);
+  border: 1px solid $error;
+  border-radius: $border-radius-md;
+  color: $error;
+  font-size: $font-size-sm;
+  margin-bottom: $spacing-lg;
+}
+
+.form-actions {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+  margin-top: $spacing-xl;
+
+  @include tablet {
+    flex-direction: row;
+    justify-content: flex-end;
+  }
+
+  .btn-primary {
+    @include button-primary;
+    padding: $spacing-md $spacing-xl;
+    font-size: $font-size-base;
+    order: -1;
+
+    @include tablet {
+      order: 0;
+    }
+  }
+
+  .btn-secondary {
+    @include button-secondary;
+    padding: $spacing-md $spacing-xl;
+    font-size: $font-size-base;
+  }
+
+  .loading-text {
+    @include flex-center;
+    gap: $spacing-sm;
+  }
+
+  .spinner-small {
+    @include loading-spinner;
+    width: 16px;
+    height: 16px;
+    border-width: 2px;
+  }
+}
