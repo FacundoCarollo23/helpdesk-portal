@@ -1,1 +1,99 @@
-<p>dashboard works!</p>
+<div class="dashboard">
+  <div class="dashboard-header">
+    <div class="header-content">
+      <h1>Portal de Incidencias</h1>
+      <button class="btn-new-ticket" (click)="goToNewTicket()">
+        + Nueva Incidencia
+      </button>
+    </div>
+  </div>
+
+  <div class="dashboard-stats" *ngIf="stats">
+    <div class="stat-card">
+      <div class="stat-value">{{ stats.totalTickets }}</div>
+      <div class="stat-label">Total</div>
+    </div>
+    <div class="stat-card stat-open">
+      <div class="stat-value">{{ stats.openTickets }}</div>
+      <div class="stat-label">Abiertos</div>
+    </div>
+    <div class="stat-card stat-in-progress">
+      <div class="stat-value">{{ stats.inProgressTickets }}</div>
+      <div class="stat-label">En Progreso</div>
+    </div>
+    <div class="stat-card stat-resolved">
+      <div class="stat-value">{{ stats.resolvedTickets }}</div>
+      <div class="stat-label">Resueltos</div>
+    </div>
+  </div>
+
+  <div class="dashboard-filters">
+    <div class="filter-group">
+      <label>Estado:</label>
+      <select
+        [value]="selectedStatus"
+        (change)="onStatusFilterChange($any($event.target).value)"
+        class="filter-select">
+        <option *ngFor="let status of ticketStatuses" [value]="status.value">
+          {{ status.label }}
+        </option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Categoría:</label>
+      <select
+        [value]="selectedCategory"
+        (change)="onCategoryFilterChange($any($event.target).value)"
+        class="filter-select">
+        <option *ngFor="let category of ticketCategories" [value]="category.value">
+          {{ category.label }}
+        </option>
+      </select>
+    </div>
+  </div>
+
+  <div class="tickets-section">
+    <div *ngIf="loading" class="loading-state">
+      <div class="spinner"></div>
+      <p>Cargando tickets...</p>
+    </div>
+
+    <div *ngIf="error && !loading" class="error-state">
+      <p>{{ error }}</p>
+      <button (click)="loadTickets()" class="btn-retry">Reintentar</button>
+    </div>
+
+    <div *ngIf="!loading && !error && filteredTickets.length === 0" class="empty-state">
+      <p>No se encontraron tickets con los filtros seleccionados</p>
+    </div>
+
+    <div *ngIf="!loading && !error && filteredTickets.length > 0" class="tickets-list">
+      <div
+        *ngFor="let ticket of filteredTickets"
+        class="ticket-card"
+        (click)="goToTicketDetail(ticket.id)">
+        <div class="ticket-header">
+          <div class="ticket-id">{{ ticket.id }}</div>
+          <div class="ticket-badges">
+            <span class="badge" [ngClass]="getStatusClass(ticket.status)">
+              {{ ticket.status }}
+            </span>
+            <span class="badge" [ngClass]="getPriorityClass(ticket.priority)">
+              {{ ticket.priority }}
+            </span>
+          </div>
+        </div>
+
+        <h3 class="ticket-title">{{ ticket.title }}</h3>
+
+        <p class="ticket-description">{{ ticket.description }}</p>
+
+        <div class="ticket-footer">
+          <span class="ticket-category">{{ ticket.category }}</span>
+          <span class="ticket-date">{{ formatDate(ticket.createdAt) }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
